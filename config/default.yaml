@@ -3,7 +3,7 @@
 
 llm:
   provider: anthropic
-  model: claude-sonnet-4-20250514  # Options: claude-sonnet-4-20250514, claude-opus-4-20250514, etc.
+  model: claude-sonnet-4-6  # Options: claude-sonnet-4-6, claude-opus-4-8, etc.
   api_key: null  # Falls back to ANTHROPIC_API_KEY env var
 
 watch:

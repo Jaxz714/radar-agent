@@ -12,7 +12,7 @@ DEFAULT_CONFIG_FILE = DEFAULT_CONFIG_DIR / "config.yaml"
 DEFAULT_CONFIG = {
     "llm": {
         "provider": "anthropic",
-        "model": "claude-sonnet-4-20250514",
+        "model": "claude-sonnet-4-6",
         "api_key": None,  # Falls back to ANTHROPIC_API_KEY env var
     },
     "watch": {

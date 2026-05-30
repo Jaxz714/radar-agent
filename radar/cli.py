@@ -96,7 +96,7 @@ def doctor(ctx):
 @click.argument("value")
 @click.pass_context
 def set(ctx, key, value):
-    """Set a config value. Example: radar set llm.model claude-sonnet-4-20250514"""
+    """Set a config value. Example: radar set llm.model claude-sonnet-4-6"""
     config = _load_config(ctx)
     config.set(key, value)
     config.save()

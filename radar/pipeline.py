@@ -26,7 +26,7 @@ class Pipeline:
         self.config = config
         self.engine = AnalysisEngine(
             api_key=config.api_key,
-            model=config.get("llm.model", "claude-sonnet-4-20250514"),
+            model=config.get("llm.model", "claude-sonnet-4-6"),
         )
 
     async def run(self, sources: list[str] | None = None, verbose: bool = False) -> dict[str, Any]:
