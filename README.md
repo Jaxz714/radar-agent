@@ -1,3 +1,5 @@
+[English](README.md) | [中文](README_CN.md)
+
 # 📡 Radar Agent
 
 **AI-powered competitive intelligence agent** — monitor competitors, track trends, and get actionable insights from GitHub, Hacker News, Product Hunt, RSS feeds, and more.
