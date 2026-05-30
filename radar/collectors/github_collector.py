@@ -193,34 +193,43 @@ class GitHubCollector(BaseCollector):
         """Scrape GitHub trending page."""
         signals = []
         try:
+            import re
             resp = await client.get(
                 "https://github.com/trending?since=daily",
                 headers={"Accept": "text/html", "User-Agent": "radar-agent/0.1"},
             )
             if resp.status_code == 200:
-                # Parse trending repos from HTML (lightweight parsing)
                 html = resp.text
-                # Extract repo names from the trending page
-                import re
-                repo_pattern = re.compile(r'href="/([^"/]+/[^"]+)"')
-                repos_found = set()
-                for match in repo_pattern.finditer(html):
-                    repo = match.group(1)
-                    if "/" in repo and repo not in repos_found and not repo.startswith(("assets/", "features/")):
-                        repos_found.add(repo)
-                        if len(repos_found) >= 10:
-                            break
+                # Extract repos from <article> tags with <h2> containing repo links
+                articles = re.findall(r'<article[^>]*>.*?</article>', html, re.DOTALL)
+                for art in articles[:10]:
+                    h2_match = re.search(r'<h2[^>]*>.*?href="(/[^"]+)".*?</h2>', art, re.DOTALL)
+                    if h2_match:
+                        repo_path = h2_match.group(1).strip("/")
+                        if "/" not in repo_path:
+                            continue
 
-                for repo in list(repos_found)[:5]:
-                    signals.append(
-                        Signal(
-                            source="github",
-                            title=f"🔥 Trending: {repo}",
-                            url=f"https://github.com/{repo}",
-                            summary="Trending on GitHub today",
-                            metadata={"type": "trending"},
+                        # Try to extract description
+                        desc_match = re.search(r'<p[^>]*class="[^"]*col-9[^"]*"[^>]*>(.*?)</p>', art, re.DOTALL)
+                        description = re.sub(r'<[^>]+>', '', desc_match.group(1)).strip() if desc_match else ""
+
+                        # Try to extract stars today
+                        stars_match = re.search(r'([\d,]+)\s+stars\s+today', art)
+                        stars_today = stars_match.group(1) if stars_match else ""
+
+                        summary = description[:200] if description else "Trending on GitHub today"
+                        if stars_today:
+                            summary += f" | ⭐ {stars_today} stars today"
+
+                        signals.append(
+                            Signal(
+                                source="github",
+                                title=f"🔥 Trending: {repo_path}",
+                                url=f"https://github.com/{repo_path}",
+                                summary=summary,
+                                metadata={"type": "trending", "stars_today": stars_today},
+                            )
                         )
-                    )
         except Exception:
             pass
         return signals
