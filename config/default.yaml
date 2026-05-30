@@ -1,0 +1,62 @@
+# Radar Agent Configuration
+# Edit this file and copy to ~/.radar/config.yaml
+
+llm:
+  provider: anthropic
+  model: claude-sonnet-4-20250514  # Options: claude-sonnet-4-20250514, claude-opus-4-20250514, etc.
+  api_key: null  # Falls back to ANTHROPIC_API_KEY env var
+
+watch:
+  # GitHub repos to monitor (commits, releases, star changes)
+  github_repos:
+    # - anthropics/claude-code
+    # - openai/openai-python
+    # - facebook/react
+
+  # GitHub orgs to monitor (new/updated repos)
+  github_orgs:
+    # - anthropics
+    # - openai
+
+  # GitHub topics to track (trending repos with these topics)
+  github_topics:
+    # - ai-agent
+    # - llm
+    # - mcp
+
+  # Keywords for Hacker News filtering (case-insensitive)
+  hackernews_keywords:
+    # - AI agent
+    # - LLM
+    # - Claude
+    # - GPT
+    # - open source
+
+  # Keywords for Product Hunt filtering
+  producthunt_categories:
+    # - ai
+    # - agent
+    # - automation
+
+  # RSS feeds to monitor
+  rss_feeds:
+    # - https://blog.anthropic.com/rss.xml
+    # - https://openai.com/blog/rss.xml
+    # - https://huggingface.co/blog/feed.xml
+
+  # Web pages to monitor (via Jina Reader)
+  web_pages:
+    # - name: "Anthropic Pricing"
+    #   url: https://www.anthropic.com/pricing
+    # - name: "OpenAI Models"
+    #   url: https://platform.openai.com/docs/models
+
+digest:
+  output_dir: ~/.radar/digests
+  format: both  # markdown | json | both
+  language: zh   # zh | en
+
+schedule:
+  enabled: false
+  time: "09:00"
+  timezone: Asia/Shanghai
